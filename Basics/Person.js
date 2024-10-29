@@ -7,6 +7,7 @@ const pHobby=()=>{
     console.log("Hobby is Coding")
 }
 
+
 module.exports={
     name,
     age,
