@@ -9,10 +9,16 @@ dbconnection.DbConnection();
 
 // Router Config
 app.use(express.json())
+const user = require("./router/UserRouter")
 const myrouter = require("./router/ProductRouter")
 const myrouter1 = require("./router/CategoryRouter")
+const empRouter = require("./router/EmployeeRouter")
+const student = require("./router/Studentrouter")
 app.use("/product", myrouter)
 app.use("/category", myrouter1)
+app.use("/employee", empRouter)
+app.use("/users", user)
+app.use("/student", student)
 
 
 app.listen(PORT, (req, res) => {
