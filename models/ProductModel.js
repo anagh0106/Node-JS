@@ -24,4 +24,4 @@ const productSchema = new Schema({
     }
 })
 
-module.exports=mongooes.model("products",productSchema)
+module.exports = mongooes.model("products", productSchema)
