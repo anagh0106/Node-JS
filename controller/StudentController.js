@@ -99,5 +99,6 @@ module.exports = {
     getStudentByID,
     updateStudent,
     deleteStudent,
-    getStudentByRollno
+    getStudentByRollno,
+
 }

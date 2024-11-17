@@ -2,19 +2,26 @@ const UserModel = require("../models/UserModel");
 const userModel = require("../models/UserModel")
 
 const addUser = async (req, res) => {
-    const user = req.body
-    if (user.name == undefined || user.email == undefined || user.age == undefined || user.status == undefined) {
-        res.status(404).json({
-            message: "Data is not correct"
-        })
-    } else {
-        const saveUser = await userModel.create(req.body);
+    // const user = req.body
+    // if (user.name == undefined || user.email == undefined || user.age == undefined || user.status == undefined) {
+    //     res.status(404).json({
+    //         message: "Data is not correct"
+    //     })
+    // } else {
+    //     const saveUser = await userModel.create(req.body);
 
-        res.status(201).json({
-            message: "Success",
-            data: saveUser
-        })
-    }
+    //     res.status(201).json({
+    //         message: "Success",
+    //         data: saveUser
+    //     })
+    // }
+
+    const saveUser = await userModel.create(req.body);
+    res.status(201).json({
+        message: "Success",
+        data: saveUser
+    })
+
 }
 
 const getAllUsers = async (req, res) => {
