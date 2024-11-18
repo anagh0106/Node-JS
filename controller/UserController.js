@@ -1,5 +1,5 @@
 const UserModel = require("../models/UserModel");
-const userModel = require("../models/UserModel")
+const encrypt = require("../util/Encrypt")
 
 const addUser = async (req, res) => {
     // const user = req.body
@@ -16,7 +16,13 @@ const addUser = async (req, res) => {
     //     })
     // }
 
-    const saveUser = await userModel.create(req.body);
+    const hashedPassword = encrypt.encryptPassword(req.body.password);
+    const UserObject = Object.aassign(req.body, {
+        password: hashedPassword
+    })
+
+
+    const saveUser = await userModel.create(UserObject);
     res.status(201).json({
         message: "Success",
         data: saveUser
