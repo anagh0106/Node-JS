@@ -12,6 +12,7 @@ const verifyToken = (req, res, next) => {
         if (token != undefined) {
             if (token.startsWith("Bearer")) {
                 token = token.split(" ")[1]
+                console.log(token)
 
                 const payload = jwt.verify(token, secret)
                 console.log("Payload : ", payload)

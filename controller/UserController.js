@@ -3,6 +3,7 @@ const UserModel = require("../models/UserModel");
 const encrypt = require("../util/Encrypt")
 const tokenutil = require("../util/TokenUtil")
 const cloudinary = require("./CloudinaryController")
+const mailer = require("../util/MailUtil")
 
 const addUser = async (req, res) => {
     // const user = req.body
@@ -11,7 +12,7 @@ const addUser = async (req, res) => {
     //         message: "Data is not correct"
     //     })
     // } else {
-    //     const saveUser = await userModel.create(req.body);
+    //     const saveUser = await UserModel.create(req.body);
 
     //     res.status(201).json({
     //         message: "Success",
@@ -26,6 +27,7 @@ const addUser = async (req, res) => {
 
 
     const saveUser = await UserModel.create(UserObject);
+    await mailer.sendMail(saveUser.email, "Greeting Mail To New User", `Hello Mr/Mrs ${saveUser.name} , Welcome To Our App`)
     res.status(201).json({
         message: "Success",
         data: saveUser
@@ -34,7 +36,7 @@ const addUser = async (req, res) => {
 }
 
 const getAllUsers = async (req, res) => {
-    const users = await userModel.find();
+    const users = await UserModel.find();
     res.status(200).json({
         msg: "Users Found Successfully",
         data: users
@@ -42,7 +44,7 @@ const getAllUsers = async (req, res) => {
 }
 
 const getUserById = async (req, res) => {
-    const userId = await userModel.findById(req.params.id)
+    const userId = await UserModel.findById(req.params.id)
     if (userId != null || userId != undefined) {
         res.status(200).json({
             msg: "User Fatched Successfully",

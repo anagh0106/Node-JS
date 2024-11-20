@@ -15,5 +15,6 @@ router.put("/:id", userControll.updateUser);
 router.delete("/:id", userControll.deleteUser);
 router.get("/:age", userControll.getUserByAge);
 router.post("/login", userControll.loginUser);
+router.post("/file", userControll.uploadFile);
 
 module.exports = router;
