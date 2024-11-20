@@ -1,7 +1,7 @@
 const authMiddleware = (req, res, next) => {
-    const token = req.headers.autorization;
+    const token = req.headers.authorization;
     console.log("Token is : ", token)
-    if (token == 123456) {
+    if (token == "Anagh") {
         next();
     }
     else {

@@ -1,6 +1,6 @@
 const UserModel = require("../models/UserModel");
 const encrypt = require("../util/Encrypt")
-
+const tokenutil = require("../util/TokenUtil")
 const addUser = async (req, res) => {
     // const user = req.body
     // if (user.name == undefined || user.email == undefined || user.age == undefined || user.status == undefined) {
@@ -17,12 +17,12 @@ const addUser = async (req, res) => {
     // }
 
     const hashedPassword = encrypt.encryptPassword(req.body.password);
-    const UserObject = Object.aassign(req.body, {
+    const UserObject = Object.assign(req.body, {
         password: hashedPassword
     })
 
 
-    const saveUser = await userModel.create(UserObject);
+    const saveUser = await UserModel.create(UserObject);
     res.status(201).json({
         message: "Success",
         data: saveUser
@@ -57,7 +57,7 @@ const updateUser = async (req, res) => {
     const id = req.params.id;
     const userData = req.body
 
-    const updatedUser = await userModel.findByIdAndUpdate(id, userData)
+    const updatedUser = await UserModel.findByIdAndUpdate(id, userData)
 
     res.status(200).json({
         message: "User Updated Successfully",
@@ -88,7 +88,7 @@ const getUserByAge = async (req, res) => {
 
     try {
         const age = req.params.age;
-        const userByAge = await userModel.find({ age: age });
+        const userByAge = await UserModel.find({ age: age });
         res.status(200).json({
             message: "users filtered by age",
             data: userByAge
@@ -99,7 +99,44 @@ const getUserByAge = async (req, res) => {
         })
     }
 }
+const loginUser = async (req, res) => {
 
+    try {
+        const email = req.body.email;
+        const password = req.body.password;
+
+        const UserEmail = await UserModel.findOne({ email: email })
+
+        if (UserEmail) {
+            const isPasswordMatches = encrypt.comparePassword(password, UserEmail.password)
+
+            if (isPasswordMatches == true) {
+                const token = tokenutil.generateToken(UserEmail.toObject());
+
+                res.status(200).json({
+                    message: "Login Success",
+                    data: token,
+                })
+            } else {
+                res.status(400).json({
+                    message: "Invalid Password"
+                })
+            }
+        }
+        else {
+            res.status(400).json({
+                message: "User not found!"
+            })
+        }
+
+    } catch (err) {
+        res.status(500).json({
+            message: "Internal Server Error",
+            error: err
+        })
+    }
+
+}
 
 module.exports = {
     addUser,
@@ -107,6 +144,7 @@ module.exports = {
     getUserById,
     updateUser,
     deleteUser,
-    getUserByAge
+    getUserByAge,
+    loginUser
 };
 
